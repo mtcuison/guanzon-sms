@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.guanzonsms.DAO.DSmsInfo;
 import com.example.guanzonsms.Entity.ESmsInfo;
+import com.example.guanzonsms.Object.Timestamp;
 import com.example.guanzonsms.RoomDatabase.GSMS_DB;
 
 public class SmsReceiver extends BroadcastReceiver {
@@ -57,7 +58,7 @@ public class SmsReceiver extends BroadcastReceiver {
                 loSmsinfo.setReceiverNumber("User Mobile Number");
                 loSmsinfo.setSenderNumber(msgs[i].getOriginatingAddress());
                 loSmsinfo.setTextMessage(msgs[i].getMessageBody());
-                loSmsinfo.setTimeStamp(String.valueOf(System.currentTimeMillis()/1000));
+                loSmsinfo.setTimeStamp(Timestamp.get());
                 insertSms(loDao, loSmsinfo);
 
                 // Build the message to show.
