@@ -54,18 +54,18 @@ public class SmsReceiver extends BroadcastReceiver {
 
                 // Insert received SMS to database
                 ESmsInfo loSmsinfo = new ESmsInfo();
-                loSmsinfo.setReceiverNumber("Me");
+                loSmsinfo.setReceiverNumber("User Mobile Number");
                 loSmsinfo.setSenderNumber(msgs[i].getOriginatingAddress());
                 loSmsinfo.setTextMessage(msgs[i].getMessageBody());
-                loSmsinfo.setTimeStamp(String.valueOf(msgs[i].getTimestampMillis()));
+                loSmsinfo.setTimeStamp(String.valueOf(System.currentTimeMillis()/1000));
                 insertSms(loDao, loSmsinfo);
 
                 // Build the message to show.
-                strMessage += "SMS from " + msgs[i].getOriginatingAddress();
-                strMessage += " :" + msgs[i].getMessageBody() + "\n";
-                // Log and display the SMS message.
-                Log.e(TAG, "onReceive: " + strMessage);
-                Toast.makeText(context, strMessage, Toast.LENGTH_LONG).show();
+//                strMessage += "SMS from " + msgs[i].getOriginatingAddress();
+//                strMessage += " :" + msgs[i].getMessageBody() + "\n";
+//                // Log and display the SMS message.
+//                Log.e(TAG, "onReceive: " + strMessage);
+//                Toast.makeText(context, strMessage, Toast.LENGTH_LONG).show();
             }
 
         }
