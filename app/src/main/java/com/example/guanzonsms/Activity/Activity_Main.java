@@ -12,6 +12,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.example.guanzonsms.Adapter.SmsListAdapter;
 import com.example.guanzonsms.R;
@@ -21,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class Activity_Main extends AppCompatActivity {
     private VMSmsInfo mViewModel;
     private SmsListAdapter poAdapter;
+    private LinearLayout poNoMsgsx;
     private RecyclerView rvSmsList;
     private FloatingActionButton btnCmpMsg;
 
@@ -60,6 +63,7 @@ public class Activity_Main extends AppCompatActivity {
 
     private void initObjects() {
         mViewModel = new ViewModelProvider(Activity_Main.this).get(VMSmsInfo.class);
+        poNoMsgsx = findViewById(R.id.ln_noMessages);
         btnCmpMsg = findViewById(R.id.fab);
         rvSmsList = findViewById(R.id.rv_sms_list);
         rvSmsList.setLayoutManager(new LinearLayoutManager(Activity_Main.this));
@@ -69,8 +73,15 @@ public class Activity_Main extends AppCompatActivity {
     private void displaySmsList() {
         mViewModel.getSmsList().observe(Activity_Main.this, eSmsinfos -> {
             try {
-                poAdapter = new SmsListAdapter(eSmsinfos);
-                rvSmsList.setAdapter(poAdapter);
+                if(eSmsinfos.size() > 0) {
+                    poNoMsgsx.setVisibility(View.GONE);
+                    rvSmsList.setVisibility(View.VISIBLE);
+                    poAdapter = new SmsListAdapter(eSmsinfos);
+                    rvSmsList.setAdapter(poAdapter);
+                } else {
+                    poNoMsgsx.setVisibility(View.VISIBLE);
+                    rvSmsList.setVisibility(View.GONE);
+                }
             } catch(Exception e) {
                 e.printStackTrace();
             }
