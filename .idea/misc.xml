@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Practice/GuanzonSMS/app/src/main/res/drawable/ic_baseline_message_24.xml" value="0.2203125" />
+        <entry key="..\:/Practice/GuanzonSMS/app/src/main/res/layout/activity_compose.xml" value="0.20416666666666666" />
         <entry key="..\:/Practice/GuanzonSMS/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Practice/GuanzonSMS/app/src/main/res/layout/sms_item.xml" value="0.20416666666666666" />
       </map>
