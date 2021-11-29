@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,12 +20,13 @@ import com.example.guanzonsms.RoomDatabase.GSMS_DB;
 public class SmsReceiver extends BroadcastReceiver {
     private static final String TAG = SmsReceiver.class.getSimpleName();
     public static final String PDU_TYPE = "pdus";
-
+    public static final String DEFAULT_MESSAGE = "Good day! This is Guanzon Group of Companies. How may we help you?";
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onReceive(Context context, Intent intent) {
         GSMS_DB loDatabse = GSMS_DB.getInstance(context);
         DSmsInfo loDao = loDatabse.smsDao();
+        SmsManager poSmsMngr = SmsManager.getDefault();
 
         // Get the SMS message.
         Bundle bundle = intent.getExtras();
@@ -52,6 +54,9 @@ public class SmsReceiver extends BroadcastReceiver {
                     // If Android version L or older:
                     msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
                 }
+
+                // Auto reply message to sender
+                poSmsMngr.sendTextMessage(msgs[i].getOriginatingAddress(), null, DEFAULT_MESSAGE, null, null);
 
                 // Insert received SMS to database
                 ESmsInfo loSmsinfo = new ESmsInfo();

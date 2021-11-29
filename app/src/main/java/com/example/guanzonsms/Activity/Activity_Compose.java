@@ -3,6 +3,7 @@ package com.example.guanzonsms.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -12,9 +13,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.guanzonsms.R;
+import com.example.guanzonsms.ViewModel.VMSmsInfo;
 
 public class Activity_Compose extends AppCompatActivity {
-
+    private VMSmsInfo mViewModel;
     private EditText txtNumber, txtSmsMsg;
     private Button btnSendxx;
     private String poMessage = "";
@@ -26,6 +28,7 @@ public class Activity_Compose extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         initObjects();
+        mViewModel = new ViewModelProvider(Activity_Compose.this).get(VMSmsInfo.class);
         btnSendxx.setOnClickListener(v -> sendSMS());
     }
 
