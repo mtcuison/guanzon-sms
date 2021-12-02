@@ -1,24 +1,27 @@
 package com.example.guanzonsms.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.guanzonsms.Adapter.SmsListAdapter;
 import com.example.guanzonsms.R;
 import com.example.guanzonsms.ViewModel.VMSmsInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Activity_Main extends AppCompatActivity {
     private VMSmsInfo mViewModel;
@@ -32,6 +35,7 @@ public class Activity_Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         checkPermissions();
+        requestCallPermissions();
         initObjects();
         displaySmsList();
 
@@ -58,6 +62,32 @@ public class Activity_Main extends AppCompatActivity {
             };
 
             ActivityCompat.requestPermissions(Activity_Main.this, permissions,0);
+        }
+    }
+
+    private void requestCallPermissions() {
+        List<String> requiredPermissions = new ArrayList<>();
+        requiredPermissions.add(Manifest.permission.CALL_PHONE);
+        requiredPermissions.add(Manifest.permission.READ_PHONE_STATE);
+        requiredPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        requiredPermissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        requiredPermissions.add(Manifest.permission.READ_CALL_LOG);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            requiredPermissions.add(Manifest.permission.ANSWER_PHONE_CALLS);
+        }
+
+        List<String> missingPermissions = new ArrayList<>();
+
+        for (String permission : requiredPermissions) {
+            if (ContextCompat.checkSelfPermission(this, permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+                missingPermissions.add(permission);
+            }
+        }
+
+        if (!missingPermissions.isEmpty()) {
+            ActivityCompat.requestPermissions(this,
+                    missingPermissions.toArray(new String[0]), 0);
         }
     }
 
