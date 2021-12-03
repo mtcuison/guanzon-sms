@@ -34,8 +34,7 @@ public class Activity_Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        checkPermissions();
-        requestCallPermissions();
+        requestPermissions();
         initObjects();
         displaySmsList();
 
@@ -45,30 +44,14 @@ public class Activity_Main extends AppCompatActivity {
 
     }
 
-    private void checkPermissions() {
-        int checkReadSms = ContextCompat.checkSelfPermission(Activity_Main.this, Manifest.permission.READ_SMS);
-        int checkReceiveSms = ContextCompat.checkSelfPermission(Activity_Main.this, Manifest.permission.RECEIVE_SMS);
-        int checkSendSms = ContextCompat.checkSelfPermission(Activity_Main.this, Manifest.permission.SEND_SMS);
-        int checkReceiveWapPush = ContextCompat.checkSelfPermission(Activity_Main.this, Manifest.permission.RECEIVE_WAP_PUSH);
-
-        if(checkReadSms != PackageManager.PERMISSION_GRANTED || checkReceiveSms != PackageManager.PERMISSION_GRANTED ||
-                checkSendSms != PackageManager.PERMISSION_GRANTED || checkReceiveWapPush != PackageManager.PERMISSION_GRANTED) {
-
-            String[] permissions = new String[] {
-                    Manifest.permission.READ_SMS,
-                    Manifest.permission.RECEIVE_SMS,
-                    Manifest.permission.SEND_SMS,
-                    Manifest.permission.RECEIVE_WAP_PUSH
-            };
-
-            ActivityCompat.requestPermissions(Activity_Main.this, permissions,0);
-        }
-    }
-
-    private void requestCallPermissions() {
+    private void requestPermissions() {
         List<String> requiredPermissions = new ArrayList<>();
         requiredPermissions.add(Manifest.permission.CALL_PHONE);
         requiredPermissions.add(Manifest.permission.READ_PHONE_STATE);
+        requiredPermissions.add(Manifest.permission.READ_SMS);
+        requiredPermissions.add(Manifest.permission.RECEIVE_SMS);
+        requiredPermissions.add(Manifest.permission.SEND_SMS);
+        requiredPermissions.add(Manifest.permission.RECEIVE_WAP_PUSH);
         requiredPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         requiredPermissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         requiredPermissions.add(Manifest.permission.READ_CALL_LOG);
