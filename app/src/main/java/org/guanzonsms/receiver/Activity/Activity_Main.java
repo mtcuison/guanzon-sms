@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,14 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.guanzonsms.receiver.Adapter.SmsListAdapter;
 import com.example.guanzonsms.R;
-import org.guanzonsms.receiver.ViewModel.VMSmsInfo;
+
+import org.guanzonsms.receiver.ViewModel.VMSmsIncoming;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Activity_Main extends AppCompatActivity {
-    private VMSmsInfo mViewModel;
+    private VMSmsIncoming mViewModel;
     private SmsListAdapter poAdapter;
     private LinearLayout poNoMsgsx;
     private RecyclerView rvSmsList;
@@ -75,7 +75,7 @@ public class Activity_Main extends AppCompatActivity {
     }
 
     private void initObjects() {
-        mViewModel = new ViewModelProvider(Activity_Main.this).get(VMSmsInfo.class);
+        mViewModel = new ViewModelProvider(Activity_Main.this).get(VMSmsIncoming.class);
         poNoMsgsx = findViewById(R.id.ln_noMessages);
         btnCmpMsg = findViewById(R.id.fab);
         rvSmsList = findViewById(R.id.rv_sms_list);
@@ -84,21 +84,22 @@ public class Activity_Main extends AppCompatActivity {
     }
 
     private void displaySmsList() {
-        mViewModel.getSmsList().observe(Activity_Main.this, eSmsinfos -> {
-            try {
-                if(eSmsinfos.size() > 0) {
-                    poNoMsgsx.setVisibility(View.GONE);
-                    rvSmsList.setVisibility(View.VISIBLE);
-                    poAdapter = new SmsListAdapter(eSmsinfos);
-                    rvSmsList.setAdapter(poAdapter);
-                } else {
-                    poNoMsgsx.setVisibility(View.VISIBLE);
-                    rvSmsList.setVisibility(View.GONE);
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        });
+        return;
+//        mViewModel.getSmsIncomingList().observe(Activity_Main.this, eSmsinfos -> {
+//            try {
+//                if(eSmsinfos.size() > 0) {
+//                    poNoMsgsx.setVisibility(View.GONE);
+//                    rvSmsList.setVisibility(View.VISIBLE);
+//                    poAdapter = new SmsListAdapter(eSmsinfos);
+//                    rvSmsList.setAdapter(poAdapter);
+//                } else {
+//                    poNoMsgsx.setVisibility(View.VISIBLE);
+//                    rvSmsList.setVisibility(View.GONE);
+//                }
+//            } catch(Exception e) {
+//                e.printStackTrace();
+//            }
+//        });
     }
 
     private void composeMessage() {

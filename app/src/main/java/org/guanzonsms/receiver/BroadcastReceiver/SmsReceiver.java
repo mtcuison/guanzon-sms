@@ -11,10 +11,10 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
-import org.guanzonsms.receiver.DAO.DSmsInfo;
-import org.guanzonsms.receiver.Entity.ESmsInfo;
+import org.guanzongroup.smsAppDriver.Database.DSmsIncoming;
+import org.guanzongroup.smsAppDriver.Database.ESmsIncoming;
+import org.guanzongroup.smsAppDriver.Database.GGC_SysDB;
 import org.guanzonsms.receiver.Object.Timestamp;
-import org.guanzonsms.receiver.RoomDatabase.GSMS_DB;
 
 public class SmsReceiver extends BroadcastReceiver {
     private static final String TAG = SmsReceiver.class.getSimpleName();
@@ -23,8 +23,8 @@ public class SmsReceiver extends BroadcastReceiver {
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onReceive(Context context, Intent intent) {
-        GSMS_DB loDatabse = GSMS_DB.getInstance(context);
-        DSmsInfo loDao = loDatabse.smsDao();
+        GGC_SysDB loDatabse = GGC_SysDB.getInstance(context);
+        DSmsIncoming loDao = loDatabse.smsIncoming();
         SmsManager poSmsMngr = SmsManager.getDefault();
 
         // Get the SMS message.
@@ -58,11 +58,10 @@ public class SmsReceiver extends BroadcastReceiver {
                 poSmsMngr.sendTextMessage(msgs[i].getOriginatingAddress(), null, DEFAULT_MESSAGE, null, null);
 
                 // Insert received SMS to database
-                ESmsInfo loSmsinfo = new ESmsInfo();
-                loSmsinfo.setReceiverNumber("User Mobile Number");
-                loSmsinfo.setSenderNumber(msgs[i].getOriginatingAddress());
-                loSmsinfo.setTextMessage(msgs[i].getMessageBody());
-                loSmsinfo.setTimeStamp(Timestamp.get());
+                ESmsIncoming loSmsinfo = new ESmsIncoming();
+                loSmsinfo.setMobileNo(msgs[i].getOriginatingAddress());
+                loSmsinfo.setMessagex(msgs[i].getMessageBody());
+                loSmsinfo.setSendDate(Timestamp.get());
                 insertSms(loDao, loSmsinfo);
 
                 // Build the message to show.
@@ -77,23 +76,23 @@ public class SmsReceiver extends BroadcastReceiver {
 
     }
 
-    private void insertSms(DSmsInfo foDao, ESmsInfo foSmsinfo) {
+    private void insertSms(DSmsIncoming foDao, ESmsIncoming foSmsinfo) {
         new InsertSmsAsync(foDao).execute(foSmsinfo);
     }
 
-    private static class InsertSmsAsync extends AsyncTask<ESmsInfo, Void, String> {
+    private static class InsertSmsAsync extends AsyncTask<ESmsIncoming, Void, String> {
         private static final String TAG = InsertSmsAsync.class.getSimpleName();
-        private final DSmsInfo loDao;
+        private final DSmsIncoming loDao;
 
-        InsertSmsAsync(DSmsInfo foDao) {
+        InsertSmsAsync(DSmsIncoming foDao) {
             this.loDao = foDao;
         }
 
         @Override
-        protected String doInBackground(ESmsInfo... eSmsInfos) {
+        protected String doInBackground(ESmsIncoming... eSmsInfos) {
             String lsResult = "";
             try {
-                loDao.insert(eSmsInfos[0]);
+                loDao.SaveSmsInfo(eSmsInfos[0]);
                 lsResult = "Insertion Success";
                 return lsResult;
             } catch(Exception e) {

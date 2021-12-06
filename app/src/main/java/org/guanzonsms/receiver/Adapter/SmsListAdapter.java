@@ -8,15 +8,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.guanzonsms.receiver.Entity.ESmsInfo;
+import org.guanzongroup.smsAppDriver.Database.ESmsIncoming;
 import com.example.guanzonsms.R;
 
 import java.util.List;
 
 public class SmsListAdapter extends RecyclerView.Adapter<SmsListAdapter.SmsHolder> {
-    private final List<ESmsInfo> smsList;
+    private final List<ESmsIncoming> smsList;
 
-    public SmsListAdapter(List<ESmsInfo> foSmsList) {
+    public SmsListAdapter(List<ESmsIncoming> foSmsList) {
         this.smsList = foSmsList;
         notifyDataSetChanged();
     }
@@ -31,11 +31,11 @@ public class SmsListAdapter extends RecyclerView.Adapter<SmsListAdapter.SmsHolde
 
     @Override
     public void onBindViewHolder(@NonNull SmsHolder holder, int position) {
-        ESmsInfo sms = smsList.get(position);
-        holder.lsReceivr = sms.getReceiverNumber();
-        holder.lblTimesx.setText(sms.getTimeStamp());
-        holder.lblMobile.setText(sms.getSenderNumber());
-        holder.lblTxtMsg.setText(sms.getTextMessage());
+        ESmsIncoming sms = smsList.get(position);
+        holder.lsReceivr = "0";
+        holder.lblTimesx.setText(sms.getSendDate());
+        holder.lblMobile.setText(sms.getMobileNo());
+        holder.lblTxtMsg.setText(sms.getMessagex());
     }
 
     @Override
