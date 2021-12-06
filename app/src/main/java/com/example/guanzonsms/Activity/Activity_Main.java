@@ -1,24 +1,27 @@
 package com.example.guanzonsms.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.guanzonsms.Adapter.SmsListAdapter;
 import com.example.guanzonsms.R;
 import com.example.guanzonsms.ViewModel.VMSmsInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Activity_Main extends AppCompatActivity {
     private VMSmsInfo mViewModel;
@@ -31,7 +34,7 @@ public class Activity_Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        checkPermissions();
+        requestPermissions();
         initObjects();
         displaySmsList();
 
@@ -41,23 +44,33 @@ public class Activity_Main extends AppCompatActivity {
 
     }
 
-    private void checkPermissions() {
-        int checkReadSms = ContextCompat.checkSelfPermission(Activity_Main.this, Manifest.permission.READ_SMS);
-        int checkReceiveSms = ContextCompat.checkSelfPermission(Activity_Main.this, Manifest.permission.RECEIVE_SMS);
-        int checkSendSms = ContextCompat.checkSelfPermission(Activity_Main.this, Manifest.permission.SEND_SMS);
-        int checkReceiveWapPush = ContextCompat.checkSelfPermission(Activity_Main.this, Manifest.permission.RECEIVE_WAP_PUSH);
+    private void requestPermissions() {
+        List<String> requiredPermissions = new ArrayList<>();
+        requiredPermissions.add(Manifest.permission.CALL_PHONE);
+        requiredPermissions.add(Manifest.permission.READ_PHONE_STATE);
+        requiredPermissions.add(Manifest.permission.READ_SMS);
+        requiredPermissions.add(Manifest.permission.RECEIVE_SMS);
+        requiredPermissions.add(Manifest.permission.SEND_SMS);
+        requiredPermissions.add(Manifest.permission.RECEIVE_WAP_PUSH);
+        requiredPermissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        requiredPermissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        requiredPermissions.add(Manifest.permission.READ_CALL_LOG);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            requiredPermissions.add(Manifest.permission.ANSWER_PHONE_CALLS);
+        }
 
-        if(checkReadSms != PackageManager.PERMISSION_GRANTED || checkReceiveSms != PackageManager.PERMISSION_GRANTED ||
-                checkSendSms != PackageManager.PERMISSION_GRANTED || checkReceiveWapPush != PackageManager.PERMISSION_GRANTED) {
+        List<String> missingPermissions = new ArrayList<>();
 
-            String[] permissions = new String[] {
-                    Manifest.permission.READ_SMS,
-                    Manifest.permission.RECEIVE_SMS,
-                    Manifest.permission.SEND_SMS,
-                    Manifest.permission.RECEIVE_WAP_PUSH
-            };
+        for (String permission : requiredPermissions) {
+            if (ContextCompat.checkSelfPermission(this, permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+                missingPermissions.add(permission);
+            }
+        }
 
-            ActivityCompat.requestPermissions(Activity_Main.this, permissions,0);
+        if (!missingPermissions.isEmpty()) {
+            ActivityCompat.requestPermissions(this,
+                    missingPermissions.toArray(new String[0]), 0);
         }
     }
 
