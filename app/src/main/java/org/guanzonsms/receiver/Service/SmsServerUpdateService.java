@@ -7,6 +7,10 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import org.guanzonsms.receiver.Callback.UpdateInstance;
+import org.guanzonsms.receiver.Callback.UpdateSmsServerCallback;
+import org.guanzonsms.receiver.Object.UpdateSmsServer;
+
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class SmsServerUpdateService extends JobService {
     private static final String TAG = SmsServerUpdateService.class.getSimpleName();
@@ -29,20 +33,17 @@ public class SmsServerUpdateService extends JobService {
     }
 
     private void doBackgroundTask(JobParameters params) {
-        ImportInstance[]  importInstances = {
-                new Import_AreaPerformance(getApplication()),
-                new Import_BranchPerformance(getApplication())};
+        UpdateInstance poUpdate = new UpdateSmsServer(getApplication());
         new Thread(() -> {
-            for (ImportInstance importInstance : importInstances) {
-                importInstance.ImportData(new ImportDataCallback() {
+                poUpdate.onUpdateServer(new UpdateSmsServerCallback() {
                     @Override
-                    public void OnSuccessImportData() {
-                        Log.e(TAG, importInstance.getClass().getSimpleName() + " import success.");
+                    public void OnUpdateSuccess(String message) {
+                        Log.e(TAG, poUpdate.getClass().getSimpleName() + " update success." + message);
                     }
 
                     @Override
-                    public void OnFailedImportData(String message) {
-                        Log.e(TAG, importInstance.getClass().getSimpleName() + " import failed. " + message);
+                    public void OnUpdateFailed(String message) {
+                        Log.e(TAG, poUpdate.getClass().getSimpleName() + " update failed. " + message);
                     }
                 });
                 try {
@@ -50,8 +51,6 @@ public class SmsServerUpdateService extends JobService {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
-            AppConfigPreference.getInstance(PerformanceImportService.this).setLastSyncDate(new AppConstants().CURRENT_DATE);
             jobFinished(params, false);
         }).start();
     }

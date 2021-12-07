@@ -1,6 +1,6 @@
 package org.guanzonsms.receiver.Callback;
 
 public interface UpdateSmsServerCallback {
-    void OnUpdateSuccess();
+    void OnUpdateSuccess(String message);
     void OnUpdateFailed(String message);
 }
