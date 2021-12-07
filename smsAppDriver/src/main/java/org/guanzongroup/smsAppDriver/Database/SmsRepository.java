@@ -23,8 +23,8 @@ public class SmsRepository implements DSmsIncoming{
     }
 
     @Override
-    public void UpdateSmsServerUploaded(int TransNox) {
-        poDao.UpdateSmsServerUploaded(TransNox);
+    public void UpdateSmsServerUploaded(int TransNox, String DateSent) {
+        poDao.UpdateSmsServerUploaded(TransNox, DateSent);
     }
 
     @Override
@@ -54,6 +54,6 @@ public class SmsRepository implements DSmsIncoming{
 
     @Override
     public LiveData<String> getNumberOfUploadedSms() {
-        return null;
+        return poDao.getNumberOfUploadedSms();
     }
 }

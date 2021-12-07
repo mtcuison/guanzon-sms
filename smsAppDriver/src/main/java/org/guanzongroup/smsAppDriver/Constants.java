@@ -2,6 +2,10 @@ package org.guanzongroup.smsAppDriver;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class Constants {
 
     public static String APPROVAL_CODE_EMPTY(String fsMessage) throws Exception{
@@ -20,4 +24,6 @@ public class Constants {
         loJson.put("code", fsMessage);
         return loJson.toString();
     }
+
+    public String DATE_MODIFIED = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Calendar.getInstance().getTime());
 }

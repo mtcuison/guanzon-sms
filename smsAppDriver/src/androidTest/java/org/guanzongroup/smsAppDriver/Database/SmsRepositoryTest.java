@@ -8,6 +8,7 @@ import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.guanzongroup.smsAppDriver.SmsManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,10 +40,11 @@ public class SmsRepositoryTest {
     public void saveSmsInfo() {
         ESmsIncoming loSms = new ESmsIncoming();
         loSms.setMessagex("Unit test entry");
-        loSms.setTransact("2021-");
-        loSms.setSourceCd("");
-        loSms.setMobileNo("");
-        loSms.setSubscrbr("");
+        loSms.setTransact("2021-12-07");
+        loSms.setSourceCd("HL");
+        loSms.setMobileNo("09171870011");
+        loSms.setSubscrbr(SmsManager.getSubs(loSms.getMobileNo()));
+        loSms.setSendStat("0");
         loSms.setFollowUp("");
         loSms.setNoRetryx("");
         loSms.setReadxxxx("");
@@ -51,7 +53,6 @@ public class SmsRepositoryTest {
         loSms.setDateRpld("");
         loSms.setPostedxx("");
         loSms.setTranStat("");
-        loSms.setSendStat("");
         loSms.setSendDate("");
         poDao.SaveSmsInfo(loSms);
         List<ESmsIncoming> loResult = poDao.getSMSIncoming(1);
@@ -64,10 +65,11 @@ public class SmsRepositoryTest {
         for(int x = 0; x < 10; x++){
             ESmsIncoming loSms = new ESmsIncoming();
             loSms.setMessagex("Unit test entry");
-            loSms.setTransact("2021-");
-            loSms.setSourceCd("");
-            loSms.setMobileNo("");
-            loSms.setSubscrbr("2");
+            loSms.setTransact("2021-12-07");
+            loSms.setSourceCd("HL");
+            loSms.setMobileNo("09171870011");
+            loSms.setSubscrbr(SmsManager.getSubs(loSms.getMobileNo()));
+            loSms.setSendStat("0");
             loSms.setFollowUp("");
             loSms.setNoRetryx("");
             loSms.setReadxxxx("");
@@ -76,7 +78,6 @@ public class SmsRepositoryTest {
             loSms.setDateRpld("");
             loSms.setPostedxx("");
             loSms.setTranStat("");
-            loSms.setSendStat("");
             loSms.setSendDate("");
             poDao.SaveSmsInfo(loSms);
         }
@@ -88,10 +89,10 @@ public class SmsRepositoryTest {
     public void testSpecialCharacters() throws Exception{
         ESmsIncoming loSms = new ESmsIncoming();
         loSms.setMessagex("Unit test entry ñ @ Å Î");
-        loSms.setTransact("2021-");
-        loSms.setSourceCd("");
-        loSms.setMobileNo("");
-        loSms.setSubscrbr("2");
+        loSms.setSourceCd("HL");
+        loSms.setMobileNo("09171870011");
+        loSms.setSubscrbr(SmsManager.getSubs(loSms.getMobileNo()));
+        loSms.setSendStat("0");
         loSms.setFollowUp("");
         loSms.setNoRetryx("");
         loSms.setReadxxxx("");
@@ -100,7 +101,6 @@ public class SmsRepositoryTest {
         loSms.setDateRpld("");
         loSms.setPostedxx("");
         loSms.setTranStat("");
-        loSms.setSendStat("");
         loSms.setSendDate("");
         poDao.SaveSmsInfo(loSms);
 

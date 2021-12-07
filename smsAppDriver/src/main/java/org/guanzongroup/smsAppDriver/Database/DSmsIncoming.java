@@ -14,8 +14,8 @@ public interface DSmsIncoming {
     @Insert
     void SaveSmsInfo(ESmsIncoming smsIncoming);
 
-    @Query("UPDATE SMS_Incoming SET cSendStat = '1' WHERE sTransnox=:TransNox")
-    void UpdateSmsServerUploaded(int TransNox);
+    @Query("UPDATE SMS_Incoming SET dSendDate=:DateSent, cSendStat = '1' WHERE sTransnox=:TransNox")
+    void UpdateSmsServerUploaded(int TransNox, String DateSent);
 
     @Query("SELECT * FROM SMS_Incoming WHERE sTransnox =:TransNox")
     List<ESmsIncoming> getSMSIncoming(int TransNox);
@@ -32,6 +32,12 @@ public interface DSmsIncoming {
     @Query("SELECT * FROM SMS_Incoming WHERE cSendStat <> '1'")
     List<ESmsIncoming> getSmsIncomingForUpload();
 
-    @Query("SELECT (SELECT COUNT(*) FROM SMS_Incoming WHERE cSendStat <> '1') AS SentOverReceive")
+//    @Query("SELECT (SELECT COUNT(*) FROM SMS_Incoming WHERE cSendStat <> '1') AS SentOverReceive")
+
+    @Query("SELECT (SELECT COUNT(*) FROM SMS_Incoming " +
+            "WHERE cSendStat <> '1')" +
+            " || '/' || " +
+            "(SELECT COUNT(*) FROM SMS_Incoming " +
+            "WHERE cSendStat == '1') AS Current_Inventory")
     LiveData<String> getNumberOfUploadedSms();
 }

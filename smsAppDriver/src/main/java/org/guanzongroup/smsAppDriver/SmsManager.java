@@ -24,7 +24,7 @@ public class SmsManager extends SmsRepository {
     }
 
     public void updateUploadedSms(int TransNox){
-        UpdateSmsServerUploaded(TransNox);
+        UpdateSmsServerUploaded(TransNox, new Constants().DATE_MODIFIED);
     }
 
     public static String getSubs(String mobileNo){
