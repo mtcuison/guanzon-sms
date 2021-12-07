@@ -28,7 +28,7 @@
         android:theme="@style/Theme.GuanzonSMS">
 
         <receiver
-            android:name=".BroadcastReceiver.IncomingCallReceiver"
+            android:name="org.guanzonsms.receiver.BroadcastReceiver.IncomingCallReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -37,7 +37,7 @@
         </receiver>
 
         <receiver
-            android:name=".BroadcastReceiver.BootReceiver"
+            android:name="org.guanzonsms.receiver.BroadcastReceiver.BootReceiver"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
@@ -49,7 +49,7 @@
         </receiver>
 
         <activity
-            android:name=".Activity.Activity_Compose"
+            android:name="org.guanzonsms.receiver.Activity.Activity_Compose"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -66,7 +66,7 @@
         </activity>
 
         <receiver
-            android:name=".BroadcastReceiver.SmsReceiver"
+            android:name="org.guanzonsms.receiver.BroadcastReceiver.SmsReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -75,7 +75,7 @@
         </receiver>
 
         <activity
-            android:name=".Activity.Activity_Main"
+            android:name="org.guanzonsms.receiver.Activity.Activity_Main"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
