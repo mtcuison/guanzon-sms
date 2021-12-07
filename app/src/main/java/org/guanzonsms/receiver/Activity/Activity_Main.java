@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -88,22 +89,21 @@ public class Activity_Main extends AppCompatActivity {
     }
 
     private void displaySmsList() {
-        return;
-//        mViewModel.getSmsIncomingList().observe(Activity_Main.this, eSmsinfos -> {
-//            try {
-//                if(eSmsinfos.size() > 0) {
-//                    poNoMsgsx.setVisibility(View.GONE);
-//                    rvSmsList.setVisibility(View.VISIBLE);
-//                    poAdapter = new SmsListAdapter(eSmsinfos);
-//                    rvSmsList.setAdapter(poAdapter);
-//                } else {
-//                    poNoMsgsx.setVisibility(View.VISIBLE);
-//                    rvSmsList.setVisibility(View.GONE);
-//                }
-//            } catch(Exception e) {
-//                e.printStackTrace();
-//            }
-//        });
+        mViewModel.getSmsIncomingListForViewing().observe(Activity_Main.this, eSmsinfos -> {
+            try {
+                if(eSmsinfos.size() > 0) {
+                    poNoMsgsx.setVisibility(View.GONE);
+                    rvSmsList.setVisibility(View.VISIBLE);
+                    poAdapter = new SmsListAdapter(eSmsinfos);
+                    rvSmsList.setAdapter(poAdapter);
+                } else {
+                    poNoMsgsx.setVisibility(View.VISIBLE);
+                    rvSmsList.setVisibility(View.GONE);
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void composeMessage() {
