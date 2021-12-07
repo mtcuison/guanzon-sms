@@ -1,5 +1,7 @@
 package org.guanzonsms.receiver.Service;
 
+import static org.guanzonsms.receiver.Object.SmsNotifBuilder.APP_SYNC_DATA;
+
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.os.Build;
@@ -9,6 +11,7 @@ import androidx.annotation.RequiresApi;
 
 import org.guanzonsms.receiver.Callback.UpdateInstance;
 import org.guanzonsms.receiver.Callback.UpdateSmsServerCallback;
+import org.guanzonsms.receiver.Object.SmsNotifBuilder;
 import org.guanzonsms.receiver.Object.UpdateSmsServer;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -18,6 +21,7 @@ public class SmsServerUpdateService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         try{
+            SmsNotifBuilder.createNotification(getApplication(), "SMS Receiver", "SMS Server updating..",APP_SYNC_DATA).show();
             doBackgroundTask(params);
         } catch (Exception e){
             e.printStackTrace();
@@ -29,6 +33,7 @@ public class SmsServerUpdateService extends JobService {
     @Override
     public boolean onStopJob(JobParameters params) {
         Log.e(TAG, "Incoming SMS update to server has stopped.");
+        SmsNotifBuilder.createNotification(getApplication(), "SMS Receiver", "SMS Server updating suddenly stopped.",APP_SYNC_DATA).show();
         return true;
     }
 
@@ -39,11 +44,13 @@ public class SmsServerUpdateService extends JobService {
                     @Override
                     public void OnUpdateSuccess(String message) {
                         Log.e(TAG, poUpdate.getClass().getSimpleName() + " update success." + message);
+                        SmsNotifBuilder.createNotification(getApplication(), "SMS Receiver", message,APP_SYNC_DATA).show();
                     }
 
                     @Override
                     public void OnUpdateFailed(String message) {
                         Log.e(TAG, poUpdate.getClass().getSimpleName() + " update failed. " + message);
+                        SmsNotifBuilder.createNotification(getApplication(), "SMS Receiver", message, APP_SYNC_DATA).show();
                     }
                 });
                 try {
