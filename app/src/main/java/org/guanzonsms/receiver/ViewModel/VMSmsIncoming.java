@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.guanzongroup.smsAppDriver.Database.ESmsIncoming;
@@ -28,8 +29,8 @@ public class VMSmsIncoming extends AndroidViewModel {
         poSmsRepo.SaveSmsInfo(smsIncoming);
     }
 
-    public List<ESmsIncoming> getSmsIncomingList() {
-        return poSmsRepo.getSmsIncomingList();
+    public LiveData<List<ESmsIncoming>> getSmsIncomingListForViewing() {
+        return poSmsRepo.getSmsIncomingListForViewing();
     }
 
 }

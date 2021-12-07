@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.guanzonsms.receiver.Adapter.SmsListAdapter;
 import com.example.guanzonsms.R;
 
+import org.guanzonsms.receiver.Object.AppConstants;
+import org.guanzonsms.receiver.Object.ServiceScheduler;
+import org.guanzonsms.receiver.Service.SmsServerUpdateService;
 import org.guanzonsms.receiver.ViewModel.VMSmsIncoming;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -35,6 +39,7 @@ public class Activity_Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         requestPermissions();
+        smsUpdateSchedule();
         initObjects();
         displaySmsList();
 
@@ -84,27 +89,32 @@ public class Activity_Main extends AppCompatActivity {
     }
 
     private void displaySmsList() {
-        return;
-//        mViewModel.getSmsIncomingList().observe(Activity_Main.this, eSmsinfos -> {
-//            try {
-//                if(eSmsinfos.size() > 0) {
-//                    poNoMsgsx.setVisibility(View.GONE);
-//                    rvSmsList.setVisibility(View.VISIBLE);
-//                    poAdapter = new SmsListAdapter(eSmsinfos);
-//                    rvSmsList.setAdapter(poAdapter);
-//                } else {
-//                    poNoMsgsx.setVisibility(View.VISIBLE);
-//                    rvSmsList.setVisibility(View.GONE);
-//                }
-//            } catch(Exception e) {
-//                e.printStackTrace();
-//            }
-//        });
+        mViewModel.getSmsIncomingListForViewing().observe(Activity_Main.this, eSmsinfos -> {
+            try {
+                if(eSmsinfos.size() > 0) {
+                    poNoMsgsx.setVisibility(View.GONE);
+                    rvSmsList.setVisibility(View.VISIBLE);
+                    poAdapter = new SmsListAdapter(eSmsinfos);
+                    rvSmsList.setAdapter(poAdapter);
+                } else {
+                    poNoMsgsx.setVisibility(View.VISIBLE);
+                    rvSmsList.setVisibility(View.GONE);
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void composeMessage() {
         Intent loIntent = new Intent(Activity_Main.this, Activity_Compose.class);
         startActivity(loIntent);
+    }
+
+    private void smsUpdateSchedule() {
+        ServiceScheduler.scheduleJob(Activity_Main.this, SmsServerUpdateService.class,
+                ServiceScheduler.FIFTEEN_MINUTE_PERIODIC,
+                AppConstants.DataServiceID);
     }
 
 }

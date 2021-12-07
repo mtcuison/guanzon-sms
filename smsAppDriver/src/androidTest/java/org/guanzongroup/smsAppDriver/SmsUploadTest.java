@@ -92,7 +92,7 @@ public class SmsUploadTest {
     public void testUploadSmsIncomingNoValue() {
         poUpload.setRemoteServer(SmsUpload.LOCAL_SERVER);
         List<ESmsIncoming> loSms = null;
-        poUpload.UploadSmsIncoming(loSms, new SmsUpload.OnUploadCallback() {
+        poUpload.UploadSmsIncoming(loSms, SmsUpload.LOCAL_SERVER, new SmsUpload.OnUploadCallback() {
             @Override
             public void OnUpload(String args) {
                 Log.d(TAG, args);
@@ -112,7 +112,7 @@ public class SmsUploadTest {
     public void testUploadSmsIncomingZeroIndex() {
         poUpload.setRemoteServer(SmsUpload.LOCAL_SERVER);
         List<ESmsIncoming> loSms = new ArrayList<>();
-        poUpload.UploadSmsIncoming(loSms, new SmsUpload.OnUploadCallback() {
+        poUpload.UploadSmsIncoming(loSms, SmsUpload.LOCAL_SERVER, new SmsUpload.OnUploadCallback() {
             @Override
             public void OnUpload(String args) {
                 Log.d(TAG, args);
@@ -132,7 +132,7 @@ public class SmsUploadTest {
     public void testUploadSmsIncomingLive() {
         poUpload.setRemoteServer(SmsUpload.LIVE_SERVER);
         List<ESmsIncoming> loSms = poDB.getSmsIncomingForUpload();
-        poUpload.UploadSmsIncoming(loSms, new SmsUpload.OnUploadCallback() {
+        poUpload.UploadSmsIncoming(loSms, SmsUpload.LOCAL_SERVER, new SmsUpload.OnUploadCallback() {
             @Override
             public void OnUpload(String args) {
                 Log.d(TAG, args);
@@ -152,7 +152,7 @@ public class SmsUploadTest {
     public void testUploadSmsIncomingLocal() {
         poUpload.setRemoteServer(SmsUpload.LOCAL_SERVER);
         List<ESmsIncoming> loSms = poDB.getSmsIncomingForUpload();
-        poUpload.UploadSmsIncoming(loSms, new SmsUpload.OnUploadCallback() {
+        poUpload.UploadSmsIncoming(loSms, SmsUpload.LOCAL_SERVER, new SmsUpload.OnUploadCallback() {
             @Override
             public void OnUpload(String args) {
                 Log.d(TAG, args);
