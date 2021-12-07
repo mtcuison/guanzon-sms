@@ -23,7 +23,7 @@ public class SmsManager extends SmsRepository {
         SaveSmsInfo(smsIncoming);
     }
 
-    public void updateUploadedSms(String TransNox){
+    public void updateUploadedSms(int TransNox){
         UpdateSmsServerUploaded(TransNox);
     }
 

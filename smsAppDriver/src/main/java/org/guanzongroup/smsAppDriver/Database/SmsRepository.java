@@ -23,18 +23,28 @@ public class SmsRepository implements DSmsIncoming{
     }
 
     @Override
-    public void UpdateSmsServerUploaded(String TransNox) {
+    public void UpdateSmsServerUploaded(int TransNox) {
         poDao.UpdateSmsServerUploaded(TransNox);
     }
 
     @Override
-    public List<ESmsIncoming> getSMSIncoming(String TransNox) {
+    public List<ESmsIncoming> getSMSIncoming(int TransNox) {
         return poDao.getSMSIncoming(TransNox);
     }
 
     @Override
     public List<ESmsIncoming> getSmsIncomingList() {
         return poDao.getSmsIncomingList();
+    }
+
+    @Override
+    public LiveData<List<ESmsIncoming>> getSmsIncomingListForViewing() {
+        return poDao.getSmsIncomingListForViewing();
+    }
+
+    @Override
+    public ESmsIncoming getSMSIncomingInfo(int TransNox) {
+        return poDao.getSMSIncomingInfo(TransNox);
     }
 
     @Override

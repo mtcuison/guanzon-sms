@@ -54,9 +54,9 @@ public class SmsRepositoryTest {
         loSms.setSendStat("");
         loSms.setSendDate("");
         poDao.SaveSmsInfo(loSms);
-        List<ESmsIncoming> loResult = poDao.getSMSIncoming("M87987732");
+        List<ESmsIncoming> loResult = poDao.getSMSIncoming(1);
         ESmsIncoming result = loResult.get(0);
-        assertEquals(loSms.getTransnox(), result.getTransnox());
+        assertEquals(1, result.getTransnox());
     }
 
     @Test
@@ -82,5 +82,30 @@ public class SmsRepositoryTest {
         }
         List<ESmsIncoming> loIncm = poDao.getSmsIncomingList();
         assertEquals(10, loIncm.size());
+    }
+
+    @Test
+    public void testSpecialCharacters() throws Exception{
+        ESmsIncoming loSms = new ESmsIncoming();
+        loSms.setMessagex("Unit test entry ñ @ Å Î");
+        loSms.setTransact("2021-");
+        loSms.setSourceCd("");
+        loSms.setMobileNo("");
+        loSms.setSubscrbr("2");
+        loSms.setFollowUp("");
+        loSms.setNoRetryx("");
+        loSms.setReadxxxx("");
+        loSms.setDateRead("");
+        loSms.setRepliedx("");
+        loSms.setDateRpld("");
+        loSms.setPostedxx("");
+        loSms.setTranStat("");
+        loSms.setSendStat("");
+        loSms.setSendDate("");
+        poDao.SaveSmsInfo(loSms);
+
+        ESmsIncoming loResult = poDao.getSMSIncomingInfo(1);
+        String lsMessage = loResult.getMessagex();
+        assertEquals("Unit test entry ñ @ Å Î", lsMessage);
     }
 }

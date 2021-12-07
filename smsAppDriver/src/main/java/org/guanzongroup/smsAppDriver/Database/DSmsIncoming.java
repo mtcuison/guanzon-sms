@@ -15,13 +15,19 @@ public interface DSmsIncoming {
     void SaveSmsInfo(ESmsIncoming smsIncoming);
 
     @Query("UPDATE SMS_Incoming SET cSendStat = '1' WHERE sTransnox=:TransNox")
-    void UpdateSmsServerUploaded(String TransNox);
+    void UpdateSmsServerUploaded(int TransNox);
 
     @Query("SELECT * FROM SMS_Incoming WHERE sTransnox =:TransNox")
-    List<ESmsIncoming> getSMSIncoming(String TransNox);
+    List<ESmsIncoming> getSMSIncoming(int TransNox);
 
     @Query("SELECT * FROM SMS_Incoming ORDER BY dTransact DESC")
     List<ESmsIncoming> getSmsIncomingList();
+
+    @Query("SELECT * FROM SMS_Incoming ORDER BY dTransact DESC")
+    LiveData<List<ESmsIncoming>> getSmsIncomingListForViewing();
+
+    @Query("SELECT * FROM SMS_Incoming WHERE sTransnox =:TransNox")
+    ESmsIncoming getSMSIncomingInfo(int TransNox);
 
     @Query("SELECT * FROM SMS_Incoming WHERE cSendStat <> '1'")
     List<ESmsIncoming> getSmsIncomingForUpload();
