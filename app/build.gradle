@@ -34,7 +34,6 @@ android {
 
 dependencies {
     def lifecycle_version = "2.4.0"
-    def arch_version = "2.1.0"
     def room_version = "2.3.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -55,4 +54,7 @@ dependencies {
     // Room
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // Module Implementations
+    implementation project(':smsAppDriver')
 }
