@@ -38,29 +38,54 @@ public class SmsUploadTest {
         poDB = new SmsRepository(context);
         poUpload = new SmsUpload(context);
 
-        for(int x = 0; x < 10; x++){
-            ESmsIncoming loSms = new ESmsIncoming();
-            loSms.setMessagex("Unit test entry");
-            loSms.setTransact("2021-");
-            loSms.setSourceCd("");
-            loSms.setMobileNo("");
-            loSms.setSubscrbr("2");
-            loSms.setFollowUp("");
-            loSms.setNoRetryx("");
-            loSms.setReadxxxx("");
-            loSms.setDateRead("");
-            loSms.setRepliedx("");
-            loSms.setDateRpld("");
-            loSms.setPostedxx("");
-            loSms.setTranStat("");
-            loSms.setSendStat("");
-            loSms.setSendDate("");
-            poDB.SaveSmsInfo(loSms);
-        }
+//        for(int x = 0; x < 10; x++){
+//            ESmsIncoming loSms = new ESmsIncoming();
+//            loSms.setMessagex("Unit test entry ñ");
+//            loSms.setTransact("2021-");
+//            loSms.setSourceCd("");
+//            loSms.setMobileNo("");
+//            loSms.setSubscrbr("2");
+//            loSms.setFollowUp("");
+//            loSms.setNoRetryx("");
+//            loSms.setReadxxxx("");
+//            loSms.setDateRead("");
+//            loSms.setRepliedx("");
+//            loSms.setDateRpld("");
+//            loSms.setPostedxx("");
+//            loSms.setTranStat("");
+//            loSms.setSendStat("");
+//            loSms.setSendDate("");
+//            poDB.SaveSmsInfo(loSms);
+//        }
     }
 
     @After
     public void tearDown() throws Exception {
+    }
+
+    @Test
+    public void testSpecialCharacters() throws Exception{
+        ESmsIncoming loSms = new ESmsIncoming();
+        loSms.setMessagex("Unit test entry ñ");
+        loSms.setTransact("2021-");
+        loSms.setSourceCd("");
+        loSms.setMobileNo("");
+        loSms.setSubscrbr("2");
+        loSms.setFollowUp("");
+        loSms.setNoRetryx("");
+        loSms.setReadxxxx("");
+        loSms.setDateRead("");
+        loSms.setRepliedx("");
+        loSms.setDateRpld("");
+        loSms.setPostedxx("");
+        loSms.setTranStat("");
+        loSms.setSendStat("");
+        loSms.setSendDate("");
+        poDB.SaveSmsInfo(loSms);
+
+        ESmsIncoming loResult = poDB.getSMSIncomingInfo(0);
+        String lsMessage = loResult.getMessagex();
+        assertEquals("Unit test entry ñ", lsMessage);
     }
 
     @Test

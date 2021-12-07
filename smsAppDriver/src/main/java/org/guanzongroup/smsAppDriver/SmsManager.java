@@ -23,8 +23,8 @@ public class SmsManager extends SmsRepository {
         SaveSmsInfo(smsIncoming);
     }
 
-    public void updateUploadedSms(String TransNox){
-        UpdateSmsServerUploaded(TransNox);
+    public void updateUploadedSms(int TransNox){
+        UpdateSmsServerUploaded(TransNox, new Constants().DATE_MODIFIED);
     }
 
     public static String getSubs(String mobileNo){

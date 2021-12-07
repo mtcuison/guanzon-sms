@@ -23,12 +23,12 @@ public class SmsRepository implements DSmsIncoming{
     }
 
     @Override
-    public void UpdateSmsServerUploaded(String TransNox) {
-        poDao.UpdateSmsServerUploaded(TransNox);
+    public void UpdateSmsServerUploaded(int TransNox, String DateSent) {
+        poDao.UpdateSmsServerUploaded(TransNox, DateSent);
     }
 
     @Override
-    public List<ESmsIncoming> getSMSIncoming(String TransNox) {
+    public List<ESmsIncoming> getSMSIncoming(int TransNox) {
         return poDao.getSMSIncoming(TransNox);
     }
 
@@ -38,12 +38,22 @@ public class SmsRepository implements DSmsIncoming{
     }
 
     @Override
+    public LiveData<List<ESmsIncoming>> getSmsIncomingListForViewing() {
+        return poDao.getSmsIncomingListForViewing();
+    }
+
+    @Override
+    public ESmsIncoming getSMSIncomingInfo(int TransNox) {
+        return poDao.getSMSIncomingInfo(TransNox);
+    }
+
+    @Override
     public List<ESmsIncoming> getSmsIncomingForUpload() {
         return poDao.getSmsIncomingForUpload();
     }
 
     @Override
     public LiveData<String> getNumberOfUploadedSms() {
-        return null;
+        return poDao.getNumberOfUploadedSms();
     }
 }
