@@ -31,7 +31,7 @@ public class SmsUpload {
         psRmServer = address;
     }
 
-    public void UploadSmsIncoming(List<ESmsIncoming> smsIncomings, OnUploadCallback callback){
+    public void UploadSmsIncoming(List<ESmsIncoming> smsIncomings, String serverAddress, OnUploadCallback callback){
         try{
             if(smsIncomings == null){
                 callback.OnFailed("No sms incoming to be upload.");
@@ -52,7 +52,7 @@ public class SmsUpload {
                     smsDetail.put(joSms);
                 }
                 params.put("incoming", smsDetail);
-//            String lsResponse = WebClient.sendRequest(psRmServer, params.toString(), null);
+//            String lsResponse = WebClient.sendRequest(serverAddress, params.toString(), null);
 //            String lsResponse = Constants.APPROVAL_CODE_EMPTY("sample");
                 String lsResponse = Constants.APPROVAL_CODE_GENERATED("sample");
 
