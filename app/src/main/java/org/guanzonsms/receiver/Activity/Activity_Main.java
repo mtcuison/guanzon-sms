@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.guanzonsms.receiver.Adapter.SmsListAdapter;
 import com.example.guanzonsms.R;
 
+import org.guanzonsms.receiver.Object.AppConstants;
+import org.guanzonsms.receiver.Object.ServiceScheduler;
+import org.guanzonsms.receiver.Service.SmsServerUpdateService;
 import org.guanzonsms.receiver.ViewModel.VMSmsIncoming;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -35,6 +38,7 @@ public class Activity_Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         requestPermissions();
+        smsUpdateSchedule();
         initObjects();
         displaySmsList();
 
@@ -105,6 +109,12 @@ public class Activity_Main extends AppCompatActivity {
     private void composeMessage() {
         Intent loIntent = new Intent(Activity_Main.this, Activity_Compose.class);
         startActivity(loIntent);
+    }
+
+    private void smsUpdateSchedule() {
+        ServiceScheduler.scheduleJob(Activity_Main.this, SmsServerUpdateService.class,
+                ServiceScheduler.FIFTEEN_MINUTE_PERIODIC,
+                AppConstants.DataServiceID);
     }
 
 }

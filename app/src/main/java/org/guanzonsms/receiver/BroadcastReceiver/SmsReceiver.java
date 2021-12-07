@@ -14,7 +14,7 @@ import android.util.Log;
 import org.guanzongroup.smsAppDriver.Database.DSmsIncoming;
 import org.guanzongroup.smsAppDriver.Database.ESmsIncoming;
 import org.guanzongroup.smsAppDriver.Database.GGC_SysDB;
-import org.guanzonsms.receiver.Object.Timestamp;
+import org.guanzonsms.receiver.Object.AppConstants;
 
 public class SmsReceiver extends BroadcastReceiver {
     private static final String TAG = SmsReceiver.class.getSimpleName();
@@ -61,7 +61,7 @@ public class SmsReceiver extends BroadcastReceiver {
                 ESmsIncoming loSmsinfo = new ESmsIncoming();
                 loSmsinfo.setMobileNo(msgs[i].getOriginatingAddress());
                 loSmsinfo.setMessagex(msgs[i].getMessageBody());
-                loSmsinfo.setSendDate(Timestamp.get());
+                loSmsinfo.setSendDate(AppConstants.CURRENT_TIMESTAMP);
                 insertSms(loDao, loSmsinfo);
 
                 // Build the message to show.
