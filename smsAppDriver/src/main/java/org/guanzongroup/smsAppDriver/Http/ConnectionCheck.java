@@ -28,8 +28,8 @@ public class ConnectionCheck {
 
     private final Context context;
 
-    private static final String LIVE_SERVER = "https://restgk.guanzongroup.com.ph/security/request_android_object.php";
-    private static final String LOCAL_SERVER = "http://192.168.10.140/security/request_android_object.php";
+    private static final String LIVE_SERVER = "https://restgk.guanzongroup.com.ph";
+    private static final String LOCAL_SERVER = "http://192.168.10.240";
 
     public interface OnCheckConnectionCallback{
         void OnCheck(boolean isDeviceConnected, String serverAddress);
