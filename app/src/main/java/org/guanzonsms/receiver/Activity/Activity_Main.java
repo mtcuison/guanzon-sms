@@ -51,6 +51,7 @@ public class Activity_Main extends AppCompatActivity {
 
     private void requestPermissions() {
         List<String> requiredPermissions = new ArrayList<>();
+        requiredPermissions.add(Manifest.permission.INTERNET);
         requiredPermissions.add(Manifest.permission.CALL_PHONE);
         requiredPermissions.add(Manifest.permission.READ_PHONE_STATE);
         requiredPermissions.add(Manifest.permission.READ_SMS);

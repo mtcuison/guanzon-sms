@@ -72,7 +72,7 @@ public class UpdateSmsServer implements UpdateInstance {
                         });
 
                     } else {
-                        callback.OnUpdateFailed("NO internet");
+                        callback.OnUpdateFailed("No Data Connection: Server update failed.");
                     }
                 });
 
