@@ -27,75 +27,111 @@ public class SmsManager extends SmsRepository {
         UpdateSmsServerUploaded(TransNox, new Constants().DATE_MODIFIED);
     }
 
+    /**
+     *
+     * @param MobileNo pass the mobile of recieve sms for reformatting into "09"
+     * @return formatted value of mobile no. if requires.
+     */
+    public static String parseMobileNo(String MobileNo){
+        String lsResult;
+
+        if (MobileNo.substring(0, 3).equalsIgnoreCase("+63")) {
+            lsResult = MobileNo.replace("+63", "0");
+        } else if (MobileNo.substring(0, 1).equalsIgnoreCase("9")) {
+            lsResult = "0" + MobileNo;
+        } else if (MobileNo.substring(0, 2).equalsIgnoreCase("63")) {
+            lsResult = MobileNo.replace("63", "0");
+        } else if (MobileNo.substring(0, 2).equalsIgnoreCase("09")) {
+            lsResult = MobileNo;
+        } else {
+            MobileNo = MobileNo.replace("-", "");
+            MobileNo = MobileNo.replace("+", "");
+            String lsTarget = MobileNo.substring(0, 2);
+            lsResult = MobileNo.replace(lsTarget, "0");
+        }
+
+        return lsResult;
+    }
+
+
+    /**
+     *
+     * @param mobileNo pass formatted mobile no to identify what network subscriber
+     * @return 0 = Globe
+     *         1 = Smart
+     *         4 = Unknown
+     */
     public static String getSubs(String mobileNo){
-        switch (mobileNo){
-            case "+63813":
-            case "+63907":
-            case "+63908":
-            case "+63909":
-            case "+63910":
-            case "+63912":
-            case "+63918":
-            case "+63919":
-            case "+63920":
-            case "+63921":
-            case "+63928":
-            case "+63929":
-            case "+63930":
-            case "+63938":
-            case "+63939":
-            case "+63946":
-            case "+63947":
-            case "+63948":
-            case "+63949":
-            case "+63989":
-            case "+63998":
-            case "+63999":
-            case "+63950":
-            case "+63913":
-            case "+63970":
-            case "+63914":
-            case "+63981":
-            case "+63911":
-            case "+63961":
-            case "+63922":
-            case "+63923":
-            case "+63932":
-            case "+63933":
-            case "+63934":
-            case "+63925":
-            case "+63942":
-            case "+63943":
-            case "+63931":
-            case "+63941":
-            case "+63924":
-            case "+63944":
+        String preMob = mobileNo.substring(0, 4);
+
+        switch (preMob){
+            case "0813":
+            case "0907":
+            case "0908":
+            case "0909":
+            case "0910":
+            case "0912":
+            case "0918":
+            case "0919":
+            case "0920":
+            case "0921":
+            case "0928":
+            case "0929":
+            case "0930":
+            case "0938":
+            case "0939":
+            case "0946":
+            case "0947":
+            case "0948":
+            case "0949":
+            case "0989":
+            case "0998":
+            case "0999":
+            case "0950":
+            case "0913":
+            case "0970":
+            case "0914":
+            case "0981":
+            case "0911":
+            case "0961":
+            case "0922":
+            case "0923":
+            case "0932":
+            case "0933":
+            case "0934":
+            case "0925":
+            case "0942":
+            case "0943":
+            case "0931":
+            case "0941":
+            case "0924":
+            case "0944":
                 return "1";
-            case "+63906":
-            case "+63915":
-            case "+63916":
-            case "+63917":
-            case "+63926":
-            case "+63927":
-            case "+63935":
-            case "+63994":
-            case "+63996":
-            case "+63997":
-            case "+63817":
-            case "+63904":
-            case "+63956":
-            case "+63975":
-            case "+63979":
-            case "+63936":
-            case "+63965":
-            case "+63976":
-            case "+63937":
-            case "+63966":
-            case "+63977":
-            case "+63995":
-            case "+63945":
-            case "+63967":
-            case "+63978":
+            case "0906":
+            case "0915":
+            case "0916":
+            case "0917":
+            case "0926":
+            case "0927":
+            case "0935":
+            case "0994":
+            case "0996":
+            case "0997":
+            case "0817":
+            case "0904":
+            case "0956":
+            case "0975":
+            case "0979":
+            case "0936":
+            case "0965":
+            case "0976":
+            case "0937":
+            case "0966":
+            case "0977":
+            case "0995":
+            case "0945":
+            case "0967":
+            case "0978":
                 return "0";
             default:
                 return "4";
