@@ -1,6 +1,7 @@
 package org.guanzonsms.receiver.BroadcastReceiver;
 
 import android.annotation.TargetApi;
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +16,11 @@ import org.guanzongroup.smsAppDriver.Constants;
 import org.guanzongroup.smsAppDriver.Database.DSmsIncoming;
 import org.guanzongroup.smsAppDriver.Database.ESmsIncoming;
 import org.guanzongroup.smsAppDriver.Database.GGC_SysDB;
+import org.guanzonsms.receiver.Callback.UpdateSmsServerCallback;
 import org.guanzonsms.receiver.Object.AppConstants;
+import org.guanzonsms.receiver.Object.SmsUploadManager;
+
+import java.util.List;
 
 public class SmsReceiver extends BroadcastReceiver {
     private static final String TAG = SmsReceiver.class.getSimpleName();
@@ -76,18 +81,36 @@ public class SmsReceiver extends BroadcastReceiver {
     private static class InsertSmsAsync extends AsyncTask<ESmsIncoming, Void, String> {
         private static final String TAG = InsertSmsAsync.class.getSimpleName();
         private final org.guanzongroup.smsAppDriver.SmsManager poSmsMngr;
+        private final SmsUploadManager poUploadx;
 
         InsertSmsAsync(Context context) {
             this.poSmsMngr = new org.guanzongroup.smsAppDriver.SmsManager(context);
+            this.poUploadx = new SmsUploadManager(context);
         }
 
         @Override
         protected String doInBackground(ESmsIncoming... eSmsInfos) {
             String lsResult = "";
             try {
+
                 poSmsMngr.saveSmsIncoming(eSmsInfos[0]);
-                lsResult = "Insertion Success";
+                lsResult = "Received SMS saved to local database.";
+
+                List<ESmsIncoming> loSmsList = poSmsMngr.getSmsIncomingForUpload();
+                poUploadx.uploadSms(loSmsList, new UpdateSmsServerCallback() {
+                    @Override
+                    public void OnUpdateSuccess(String message) {
+                        Log.e(TAG, "Incoming SMS Uploaded -> " + message);
+                    }
+
+                    @Override
+                    public void OnUpdateFailed(String message) {
+                        Log.e(TAG, "Incoming SMS Upload Failed -> " + message);
+                    }
+                });
+
                 return lsResult;
+
             } catch(Exception e) {
                 lsResult = e.getMessage();
                 return lsResult;
