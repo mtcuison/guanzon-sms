@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi;
 import org.guanzongroup.smsAppDriver.Database.ESmsIncoming;
 import org.guanzongroup.smsAppDriver.Database.SmsRepository;
 import org.guanzongroup.smsAppDriver.Http.ConnectionCheck;
+import org.guanzongroup.smsAppDriver.SmsManager;
 import org.guanzongroup.smsAppDriver.SmsUpload;
 import org.guanzonsms.receiver.Callback.UpdateInstance;
 import org.guanzonsms.receiver.Callback.UpdateSmsServerCallback;
@@ -39,12 +40,14 @@ public class UpdateSmsServer implements UpdateInstance {
 
     private static class UpdateSmsServerTask extends AsyncTask<Void, Void, Void> {
         private final UpdateSmsServerCallback callback;
+        private final SmsManager poSmsMngr;
         private final SmsRepository poSmsInfo;
         private final SmsUpload poUpload;
         private final ConnectionCheck loConn;
 
         public UpdateSmsServerTask(Application foApp, SmsRepository foSmsInfo, ConnectionCheck loConn, UpdateSmsServerCallback callback) {
             this.callback = callback;
+            this.poSmsMngr = new SmsManager(foApp);
             this.poSmsInfo = foSmsInfo;
             this.poUpload = new SmsUpload(foApp);
             this.loConn = loConn;
@@ -62,6 +65,9 @@ public class UpdateSmsServer implements UpdateInstance {
                         poUpload.UploadSmsIncoming(loSmsInfos, serverAddress, new SmsUpload.OnUploadCallback() {
                             @Override
                             public void OnUpload(String args) {
+                                if(updateLocalDatabase(loSmsInfos)) {
+                                    Log.e(TAG, "Local database updated.");
+                                }
                                 callback.OnUpdateSuccess(args);
                             }
 
@@ -82,6 +88,17 @@ public class UpdateSmsServer implements UpdateInstance {
             }
 
             return null;
+        }
+
+        private boolean updateLocalDatabase(List<ESmsIncoming> foSmsInfos) {
+            if(foSmsInfos.size() < 1) {
+                return false;
+            } else {
+                for(int x = 0; x < foSmsInfos.size(); x++) {
+                    poSmsMngr.updateUploadedSms(foSmsInfos.get(x).getTransnox());
+                }
+                return true;
+            }
         }
 
     }
