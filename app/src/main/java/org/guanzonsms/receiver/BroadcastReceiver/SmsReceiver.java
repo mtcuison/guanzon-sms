@@ -11,6 +11,7 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
+import org.guanzongroup.smsAppDriver.Constants;
 import org.guanzongroup.smsAppDriver.Database.DSmsIncoming;
 import org.guanzongroup.smsAppDriver.Database.ESmsIncoming;
 import org.guanzongroup.smsAppDriver.Database.GGC_SysDB;
@@ -61,7 +62,7 @@ public class SmsReceiver extends BroadcastReceiver {
                 ESmsIncoming loSmsinfo = new ESmsIncoming();
                 loSmsinfo.setMobileNo(msgs[i].getOriginatingAddress());
                 loSmsinfo.setMessagex(msgs[i].getMessageBody());
-                loSmsinfo.setSendDate(AppConstants.CURRENT_TIMESTAMP);
+                loSmsinfo.setSendDate(new Constants().DATE_MODIFIED);
                 insertSms(loDao, loSmsinfo);
 
                 // Build the message to show.
