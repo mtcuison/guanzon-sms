@@ -63,8 +63,12 @@ public class SmsReceiver extends BroadcastReceiver {
 
                 // Insert received SMS to database
                 ESmsIncoming loSmsinfo = new ESmsIncoming();
-                loSmsinfo.setMobileNo(msgs[i].getOriginatingAddress());
+                String lsMobileN = org.guanzongroup.smsAppDriver.SmsManager.parseMobileNo(msgs[i].getOriginatingAddress());
+                loSmsinfo.setSourceCd("HL");
+                loSmsinfo.setMobileNo(lsMobileN);
+                loSmsinfo.setSubscrbr(org.guanzongroup.smsAppDriver.SmsManager.getSubs(lsMobileN));
                 loSmsinfo.setMessagex(msgs[i].getMessageBody());
+                loSmsinfo.setSendStat("0");
                 loSmsinfo.setSendDate(new Constants().DATE_MODIFIED);
                 insertSms(context, loSmsinfo);
 
