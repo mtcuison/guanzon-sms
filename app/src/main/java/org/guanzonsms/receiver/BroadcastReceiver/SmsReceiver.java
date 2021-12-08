@@ -1,6 +1,7 @@
 package org.guanzonsms.receiver.BroadcastReceiver;
 
 import android.annotation.TargetApi;
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +12,15 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
+import org.guanzongroup.smsAppDriver.Constants;
 import org.guanzongroup.smsAppDriver.Database.DSmsIncoming;
 import org.guanzongroup.smsAppDriver.Database.ESmsIncoming;
 import org.guanzongroup.smsAppDriver.Database.GGC_SysDB;
+import org.guanzonsms.receiver.Callback.UpdateSmsServerCallback;
 import org.guanzonsms.receiver.Object.AppConstants;
+import org.guanzonsms.receiver.Object.SmsUploadManager;
+
+import java.util.List;
 
 public class SmsReceiver extends BroadcastReceiver {
     private static final String TAG = SmsReceiver.class.getSimpleName();
@@ -23,8 +29,6 @@ public class SmsReceiver extends BroadcastReceiver {
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onReceive(Context context, Intent intent) {
-        GGC_SysDB loDatabse = GGC_SysDB.getInstance(context);
-        DSmsIncoming loDao = loDatabse.smsIncoming();
         SmsManager poSmsMngr = SmsManager.getDefault();
 
         // Get the SMS message.
@@ -59,42 +63,58 @@ public class SmsReceiver extends BroadcastReceiver {
 
                 // Insert received SMS to database
                 ESmsIncoming loSmsinfo = new ESmsIncoming();
-                loSmsinfo.setMobileNo(msgs[i].getOriginatingAddress());
+                String lsMobileN = org.guanzongroup.smsAppDriver.SmsManager.parseMobileNo(msgs[i].getOriginatingAddress());
+                loSmsinfo.setSourceCd("HL");
+                loSmsinfo.setMobileNo(lsMobileN);
+                loSmsinfo.setSubscrbr(org.guanzongroup.smsAppDriver.SmsManager.getSubs(lsMobileN));
                 loSmsinfo.setMessagex(msgs[i].getMessageBody());
-                loSmsinfo.setSendDate(AppConstants.CURRENT_TIMESTAMP);
-                insertSms(loDao, loSmsinfo);
+                loSmsinfo.setSendStat("0");
+                loSmsinfo.setSendDate(new Constants().DATE_MODIFIED);
+                insertSms(context, loSmsinfo);
 
-                // Build the message to show.
-//                strMessage += "SMS from " + msgs[i].getOriginatingAddress();
-//                strMessage += " :" + msgs[i].getMessageBody() + "\n";
-//                // Log and display the SMS message.
-//                Log.e(TAG, "onReceive: " + strMessage);
-//                Toast.makeText(context, strMessage, Toast.LENGTH_LONG).show();
             }
 
         }
 
     }
 
-    private void insertSms(DSmsIncoming foDao, ESmsIncoming foSmsinfo) {
-        new InsertSmsAsync(foDao).execute(foSmsinfo);
+    private void insertSms(Context context, ESmsIncoming foSmsinfo) {
+        new InsertSmsAsync(context).execute(foSmsinfo);
     }
 
     private static class InsertSmsAsync extends AsyncTask<ESmsIncoming, Void, String> {
         private static final String TAG = InsertSmsAsync.class.getSimpleName();
-        private final DSmsIncoming loDao;
+        private final org.guanzongroup.smsAppDriver.SmsManager poSmsMngr;
+        private final SmsUploadManager poUploadx;
 
-        InsertSmsAsync(DSmsIncoming foDao) {
-            this.loDao = foDao;
+        InsertSmsAsync(Context context) {
+            this.poSmsMngr = new org.guanzongroup.smsAppDriver.SmsManager(context);
+            this.poUploadx = new SmsUploadManager(context);
         }
 
         @Override
         protected String doInBackground(ESmsIncoming... eSmsInfos) {
             String lsResult = "";
             try {
-                loDao.SaveSmsInfo(eSmsInfos[0]);
-                lsResult = "Insertion Success";
+
+                poSmsMngr.saveSmsIncoming(eSmsInfos[0]);
+                lsResult = "Received SMS saved to local database.";
+
+                List<ESmsIncoming> loSmsList = poSmsMngr.getSmsIncomingForUpload();
+                poUploadx.uploadSms(loSmsList, new UpdateSmsServerCallback() {
+                    @Override
+                    public void OnUpdateSuccess(String message) {
+                        Log.e(TAG, "Incoming SMS Uploaded -> " + message);
+                    }
+
+                    @Override
+                    public void OnUpdateFailed(String message) {
+                        Log.e(TAG, "Incoming SMS Upload Failed -> " + message);
+                    }
+                });
+
                 return lsResult;
+
             } catch(Exception e) {
                 lsResult = e.getMessage();
                 return lsResult;
