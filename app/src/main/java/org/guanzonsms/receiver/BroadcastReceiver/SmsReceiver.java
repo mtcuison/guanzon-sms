@@ -24,8 +24,6 @@ public class SmsReceiver extends BroadcastReceiver {
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onReceive(Context context, Intent intent) {
-        GGC_SysDB loDatabse = GGC_SysDB.getInstance(context);
-        DSmsIncoming loDao = loDatabse.smsIncoming();
         SmsManager poSmsMngr = SmsManager.getDefault();
 
         // Get the SMS message.
@@ -63,37 +61,31 @@ public class SmsReceiver extends BroadcastReceiver {
                 loSmsinfo.setMobileNo(msgs[i].getOriginatingAddress());
                 loSmsinfo.setMessagex(msgs[i].getMessageBody());
                 loSmsinfo.setSendDate(new Constants().DATE_MODIFIED);
-                insertSms(loDao, loSmsinfo);
+                insertSms(context, loSmsinfo);
 
-                // Build the message to show.
-//                strMessage += "SMS from " + msgs[i].getOriginatingAddress();
-//                strMessage += " :" + msgs[i].getMessageBody() + "\n";
-//                // Log and display the SMS message.
-//                Log.e(TAG, "onReceive: " + strMessage);
-//                Toast.makeText(context, strMessage, Toast.LENGTH_LONG).show();
             }
 
         }
 
     }
 
-    private void insertSms(DSmsIncoming foDao, ESmsIncoming foSmsinfo) {
-        new InsertSmsAsync(foDao).execute(foSmsinfo);
+    private void insertSms(Context context, ESmsIncoming foSmsinfo) {
+        new InsertSmsAsync(context).execute(foSmsinfo);
     }
 
     private static class InsertSmsAsync extends AsyncTask<ESmsIncoming, Void, String> {
         private static final String TAG = InsertSmsAsync.class.getSimpleName();
-        private final DSmsIncoming loDao;
+        private final org.guanzongroup.smsAppDriver.SmsManager poSmsMngr;
 
-        InsertSmsAsync(DSmsIncoming foDao) {
-            this.loDao = foDao;
+        InsertSmsAsync(Context context) {
+            this.poSmsMngr = new org.guanzongroup.smsAppDriver.SmsManager(context);
         }
 
         @Override
         protected String doInBackground(ESmsIncoming... eSmsInfos) {
             String lsResult = "";
             try {
-                loDao.SaveSmsInfo(eSmsInfos[0]);
+                poSmsMngr.saveSmsIncoming(eSmsInfos[0]);
                 lsResult = "Insertion Success";
                 return lsResult;
             } catch(Exception e) {
