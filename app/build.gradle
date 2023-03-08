@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "org.guanzonsms"
-        minSdk 21
+        minSdk 24
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -56,4 +56,5 @@ dependencies {
 
     // Module Implementations
     implementation project(':smsAppDriver')
+    implementation project(':appDriver')
 }
