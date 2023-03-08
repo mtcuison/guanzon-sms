@@ -25,11 +25,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    lintOptions {
-        disable 'GradleDynamicVersion'
-        disable 'GoogleAppIndexingWarning'
-        disable 'TypographyDashes'
+    lint {
+        disable 'GradleDynamicVersion', 'GoogleAppIndexingWarning', 'TypographyDashes'
     }
+    namespace 'com.example.guanzonsms'
 }
 
 dependencies {

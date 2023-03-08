@@ -57,23 +57,30 @@ public class SmsReceiver extends BroadcastReceiver {
                     // If Android version L or older:
                     msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
                 }
-
-                // Auto reply message to sender
-                poSmsMngr.sendTextMessage(msgs[i].getOriginatingAddress(), null, DEFAULT_MESSAGE, null, null);
-
-                // Insert received SMS to database
-                ESmsIncoming loSmsinfo = new ESmsIncoming();
-                String lsMobileN = org.guanzongroup.smsAppDriver.SmsManager.parseMobileNo(msgs[i].getOriginatingAddress());
-                loSmsinfo.setSourceCd("HL");
-                loSmsinfo.setMobileNo(lsMobileN);
-                loSmsinfo.setSubscrbr(org.guanzongroup.smsAppDriver.SmsManager.getSubs(lsMobileN));
-                loSmsinfo.setMessagex(msgs[i].getMessageBody());
-                loSmsinfo.setSendStat("0");
-                loSmsinfo.setSendDate(new Constants().DATE_MODIFIED);
-                insertSms(context, loSmsinfo);
-
             }
 
+            StringBuffer content = new StringBuffer();
+            if (msgs.length > 0) {
+                for (int x = 0; x < msgs.length; x++) {
+                    content.append(msgs[x].getMessageBody());
+                }
+            }
+            String mySmsText = content.toString();
+
+            // Auto reply message to sender
+            String lsSender = msgs[0].getOriginatingAddress();
+            poSmsMngr.sendTextMessage(lsSender, null, DEFAULT_MESSAGE, null, null);
+
+            // Insert received SMS to database
+            ESmsIncoming loSmsinfo = new ESmsIncoming();
+            String lsMobileN = org.guanzongroup.smsAppDriver.SmsManager.parseMobileNo(lsSender);
+            loSmsinfo.setSourceCd("HL");
+            loSmsinfo.setMobileNo(lsMobileN);
+            loSmsinfo.setSubscrbr(org.guanzongroup.smsAppDriver.SmsManager.getSubs(lsMobileN));
+            loSmsinfo.setMessagex(mySmsText);
+            loSmsinfo.setSendStat("0");
+            loSmsinfo.setSendDate(new Constants().DATE_MODIFIED);
+            insertSms(context, loSmsinfo);
         }
 
     }
