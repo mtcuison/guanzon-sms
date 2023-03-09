@@ -31,6 +31,7 @@ public class AppConfig {
 
     public void setServerAddress(String fsVal){
         editor.putString(SERVER_ADDRESS, fsVal);
+        editor.commit();
     }
 
     public String getServerAddress(){

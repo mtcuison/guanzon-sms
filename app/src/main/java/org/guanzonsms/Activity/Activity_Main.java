@@ -39,6 +39,7 @@ public class Activity_Main extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mViewModel = new ViewModelProvider(Activity_Main.this).get(VMSmsIncoming.class);
         setContentView(R.layout.activity_main);
         requestPermissions();
         smsUpdateSchedule();
@@ -84,7 +85,6 @@ public class Activity_Main extends AppCompatActivity {
     }
 
     private void initObjects() {
-        mViewModel = new ViewModelProvider(Activity_Main.this).get(VMSmsIncoming.class);
         poNoMsgsx = findViewById(R.id.ln_noMessages);
         btnCmpMsg = findViewById(R.id.fab);
         rvSmsList = findViewById(R.id.rv_sms_list);

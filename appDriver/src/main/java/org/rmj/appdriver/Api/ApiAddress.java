@@ -8,7 +8,7 @@ public class ApiAddress {
 
     private final AppConfig poConfig;
 
-    public static final String SMS_UPLOAD = "";
+    public static final String SMS_UPLOAD = "telemarketing/SMSClassify.php";
 
     private static ApiAddress apiAddress;
 

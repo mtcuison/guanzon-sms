@@ -22,10 +22,10 @@
         android:id="@+id/materialCardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardUseCompatPadding="true"
         app:cardCornerRadius="10dp"
-        android:layout_marginEnd="50dp"
         app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintWidth_percent=".8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_mobileno">
 
@@ -38,7 +38,8 @@
                 android:id="@+id/lbl_txt_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Text Message"
+                android:text="PRF M031 228555«Joyce Agpuldo;Petty Cash Replenishment;8397.25;2023-01-28"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,9 +51,25 @@
         android:id="@+id/lbl_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:drawableStart="@drawable/ic_baseline_received"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
         android:text="Timestamp"
-        app:layout_constraintEnd_toEndOf="@+id/materialCardView"
+        app:layout_constraintStart_toStartOf="@+id/materialCardView"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lbl_uploaded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_baseline_upload"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:text="Timestamp"
+        android:visibility="gone"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/lbl_timestamp"
+        app:layout_constraintStart_toEndOf="@+id/lbl_timestamp"
+        app:layout_constraintTop_toTopOf="@+id/lbl_timestamp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

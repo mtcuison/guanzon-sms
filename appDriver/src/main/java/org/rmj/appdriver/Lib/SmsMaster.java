@@ -16,6 +16,7 @@ import androidx.lifecycle.LiveData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.rmj.appdriver.Api.ApiAddress;
+import org.rmj.appdriver.Api.HttpHeaders;
 import org.rmj.appdriver.Database.DataAccessObject.DSmsIncoming;
 import org.rmj.appdriver.Database.Entity.ESmsIncoming;
 import org.rmj.appdriver.Database.GGC_SysDB;
@@ -93,8 +94,8 @@ public class SmsMaster {
                 loSmsinfo.setMobileNo(lsMobileN);
                 loSmsinfo.setSubscrbr(getSubs(lsMobileN));
                 loSmsinfo.setMessagex(mySmsText);
+                loSmsinfo.setReceived(new Constants().DATE_MODIFIED);
                 loSmsinfo.setSendStat("0");
-                loSmsinfo.setSendDate(new Constants().DATE_MODIFIED);
                 poDao.SaveSmsInfo(loSmsinfo);
             }
 
@@ -123,15 +124,12 @@ public class SmsMaster {
             for (int x = 0; x < loDetails.size(); x++) {
                 JSONObject params = new JSONObject();
                 ESmsIncoming loSms = loDetails.get(x);
-                params.put("dTransact", loSms.getTransact());
-                params.put("sSourceCd", loSms.getSourceCd());
-                params.put("sMessagex", loSms.getMessagex());
-                params.put("sMobileNo", loSms.getMobileNo());
-                params.put("cSubscrbr", loSms.getSubscrbr());
-                params.put("dFollowUp", loSms.getFollowUp());
+                params.put("mobile", loSms.getMobileNo());
+                params.put("message", loSms.getMessagex());
+                params.put("timestamp", loSms.getReceived());
 
                 String lsAddress = poApi.getSMSUploadAPI();
-                String lsResponse = WebClient.sendRequest(lsAddress, params.toString(), null);
+                String lsResponse = WebClient.sendRequest(lsAddress, params.toString(), HttpHeaders.getHttpHeader());
 
                 if (lsResponse == null) {
                     message = "Server unresponsive";

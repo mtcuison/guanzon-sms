@@ -26,10 +26,8 @@ public class ESmsIncoming {
     private String FollowUp = "";
     @ColumnInfo(name = "nNoRetryx")
     private String NoRetryx = "";
-    @ColumnInfo(name = "cReadxxxx")
-    private String Readxxxx = "";
-    @ColumnInfo(name = "dReadxxxx")
-    private String DateRead = "";
+    @ColumnInfo(name = "dReceived")
+    private String Received = "";
     @ColumnInfo(name = "cRepliedx")
     private String Repliedx = "";
     @ColumnInfo(name = "dRepliedx")
@@ -102,20 +100,12 @@ public class ESmsIncoming {
         NoRetryx = noRetryx;
     }
 
-    public String getReadxxxx() {
-        return Readxxxx;
+    public String getReceived() {
+        return Received;
     }
 
-    public void setReadxxxx(String readxxxx) {
-        Readxxxx = readxxxx;
-    }
-
-    public String getDateRead() {
-        return DateRead;
-    }
-
-    public void setDateRead(String dateRead) {
-        DateRead = dateRead;
+    public void setReceived(String received) {
+        Received = received;
     }
 
     public String getRepliedx() {

@@ -9,6 +9,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_sms_list"
+        app:stackFromEnd="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
