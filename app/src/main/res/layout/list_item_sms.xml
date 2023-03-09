@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.guanzonsms.Adapter.SmsListAdapter">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lbl_mobileno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Mobile number"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintWidth_percent=".8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_mobileno">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lbl_txt_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PRF M031 228555«Joyce Agpuldo;Petty Cash Replenishment;8397.25;2023-01-28"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lbl_timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_baseline_received"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:text="Timestamp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/materialCardView"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lbl_uploaded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_baseline_upload"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:text="Timestamp"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/lbl_timestamp"
+        app:layout_constraintStart_toEndOf="@+id/lbl_timestamp"
+        app:layout_constraintTop_toTopOf="@+id/lbl_timestamp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
