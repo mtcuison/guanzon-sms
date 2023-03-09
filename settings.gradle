@@ -8,5 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Guanzon SMS"
 include ':app'
-include ':smsAppDriver'
 include ':appDriver'

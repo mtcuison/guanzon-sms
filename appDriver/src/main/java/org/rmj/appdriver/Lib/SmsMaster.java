@@ -11,12 +11,17 @@ import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.rmj.appdriver.Api.ApiAddress;
 import org.rmj.appdriver.Database.DataAccessObject.DSmsIncoming;
 import org.rmj.appdriver.Database.Entity.ESmsIncoming;
 import org.rmj.appdriver.Database.GGC_SysDB;
 import org.rmj.appdriver.Etc.Constants;
+import org.rmj.appdriver.Preferences.AppConfig;
+import org.rmj.appdriver.Server.WebClient;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,6 +32,7 @@ public class SmsMaster {
     private static final String TAG = SmsMaster.class.getSimpleName();
 
     private final DSmsIncoming poDao;
+    private final ApiAddress poApi;
 
     private String message;
 
@@ -39,12 +45,15 @@ public class SmsMaster {
 
     public SmsMaster(Context instance) {
         this.poDao = GGC_SysDB.getInstance(instance).smsIncoming();
+        this.poApi = ApiAddress.getInstance(instance);
+    }
+
+    public LiveData<List<ESmsIncoming>> getSmsIncomingListForViewing(){
+        return poDao.getSmsIncomingListForViewing();
     }
 
     public boolean SaveSmsIncoming(Intent intent){
         try{
-            SmsManager poSmsMngr = SmsManager.getDefault();
-
             // Get the SMS message.
             Bundle bundle = intent.getExtras();
             SmsMessage[] msgs;
@@ -76,7 +85,6 @@ public class SmsMaster {
 
                 // Auto reply message to sender
                 String lsSender = msgs[0].getOriginatingAddress();
-                poSmsMngr.sendTextMessage(lsSender, null, DEFAULT_MESSAGE, null, null);
 
                 // Insert received SMS to database
                 ESmsIncoming loSmsinfo = new ESmsIncoming();
@@ -90,65 +98,6 @@ public class SmsMaster {
                 poDao.SaveSmsInfo(loSmsinfo);
             }
 
-            return true;
-        } catch (Exception e){
-            e.printStackTrace();
-            message = e.getMessage();
-            return false;
-        }
-    }
-
-    public boolean UploadSms(int id){
-        try{
-            JSONObject params = new JSONObject();
-            JSONArray smsDetail = new JSONArray();
-
-            ESmsIncoming loDetail = poDao.getSMSIncomingInfo(id);
-
-            if(loDetail == null){
-                message = "Unable to find record.";
-                return false;
-            }
-
-            JSONObject joSms = new JSONObject();
-            joSms.put("dTransact", loDetail.getTransact());
-            joSms.put("sSourceCd", loDetail.getSourceCd());
-            joSms.put("sMessagex", loDetail.getMessagex());
-            joSms.put("sMobileNo", loDetail.getMobileNo());
-            joSms.put("cSubscrbr", loDetail.getSubscrbr());
-            joSms.put("dFollowUp", loDetail.getFollowUp());
-            smsDetail.put(joSms);
-
-            params.put("incoming", smsDetail);
-//            String lsResponse = WebClient.sendRequest(serverAddress, params.toString(), null);
-//            String lsResponse = Constants.APPROVAL_CODE_EMPTY("sample");
-            String lsResponse = Constants.APPROVAL_CODE_GENERATED("sample");
-
-            if (lsResponse == null) {
-                message = "Server unresponsive";
-                return false;
-            }
-
-            JSONObject joResponse = new JSONObject(lsResponse);
-            String result = joResponse.getString("result");
-
-            if (result.equalsIgnoreCase("error")) {
-                JSONObject joError = joResponse.getJSONObject("error");
-                String lsErrorCd = joError.getString("code");
-                if(lsErrorCd.equalsIgnoreCase("x")){
-                    loDetail.setSendStat("3");
-                    loDetail.setSendDate(new Constants().DATE_MODIFIED);
-                    poDao.UpdateSms(loDetail);
-                    Log.d(TAG, "Sms incoming from " + loDetail.getMobileNo() + " has been tagged as spam.");
-                }
-                message = joError.getString("message");
-                return false;
-            }
-
-            loDetail.setSendStat("1");
-            loDetail.setSendDate(new Constants().DATE_MODIFIED);
-            poDao.UpdateSms(loDetail);
-            Log.d(TAG, "Sms incoming from " + loDetail.getMobileNo() + " has been uploaded successfully.");
             return true;
         } catch (Exception e){
             e.printStackTrace();
@@ -172,17 +121,17 @@ public class SmsMaster {
             }
 
             for (int x = 0; x < loDetails.size(); x++) {
-                JSONObject joSms = new JSONObject();
+                JSONObject params = new JSONObject();
                 ESmsIncoming loSms = loDetails.get(x);
-                joSms.put("dTransact", loSms.getTransact());
-                joSms.put("sSourceCd", loSms.getSourceCd());
-                joSms.put("sMessagex", loSms.getMessagex());
-                joSms.put("sMobileNo", loSms.getMobileNo());
-                joSms.put("cSubscrbr", loSms.getSubscrbr());
-                joSms.put("dFollowUp", loSms.getFollowUp());
+                params.put("dTransact", loSms.getTransact());
+                params.put("sSourceCd", loSms.getSourceCd());
+                params.put("sMessagex", loSms.getMessagex());
+                params.put("sMobileNo", loSms.getMobileNo());
+                params.put("cSubscrbr", loSms.getSubscrbr());
+                params.put("dFollowUp", loSms.getFollowUp());
 
-
-                String lsResponse = Constants.APPROVAL_CODE_GENERATED("sample");
+                String lsAddress = poApi.getSMSUploadAPI();
+                String lsResponse = WebClient.sendRequest(lsAddress, params.toString(), null);
 
                 if (lsResponse == null) {
                     message = "Server unresponsive";

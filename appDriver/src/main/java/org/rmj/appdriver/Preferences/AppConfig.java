@@ -12,7 +12,7 @@ public class AppConfig {
 
     private static final String CONFIG_NAME = "Sms_Receiver_Config";
     private static final String PRODUCT_ID = "sProdctID";
-    private static final String DATABASE_CONNECTION = "sDbConnct";
+    private static final String SERVER_ADDRESS = "sDbAddrss";
 
     private static AppConfig appConfig;
 
@@ -29,5 +29,11 @@ public class AppConfig {
         return appConfig;
     }
 
+    public void setServerAddress(String fsVal){
+        editor.putString(SERVER_ADDRESS, fsVal);
+    }
 
+    public String getServerAddress(){
+        return pref.getString(SERVER_ADDRESS, "");
+    }
 }

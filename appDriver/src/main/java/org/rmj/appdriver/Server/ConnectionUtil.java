@@ -18,7 +18,7 @@ import android.net.NetworkInfo;
 import android.os.StrictMode;
 import android.util.Log;
 
-import org.rmj.g3appdriver.etc.AppConfigPreference;
+import org.rmj.appdriver.Preferences.AppConfig;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -39,8 +39,7 @@ public class ConnectionUtil {
     private String message;
 
     private static final String LOCAL = "http://192.168.10.228/";
-    private static final String PRIMARY_LIVE = "https://restgk.guanzongroup.com.ph/";
-    private static final String SECONDARY_LIVE = "https://restgk1.guanzongroup.com.ph/";
+    private static final String LIVE = "https://restgk.guanzongroup.com.ph/";
 
     public ConnectionUtil(Context context){
         this.context = context;
@@ -50,47 +49,27 @@ public class ConnectionUtil {
         return message;
     }
 
-    public boolean isDeviceConnected(){
+    public boolean hasActiveServer(){
         try {
             if (!deviceConnected()) {
                 message = "Please enable wifi or data to connect.";
                 return false;
-            } else {
-                boolean isBackUp = loConfig.isBackUpServer();
-                if (isBackUp) {
-                    lsAddress = SECONDARY_LIVE;
-                    if (!isReachable(lsAddress)) {
-                        Log.e(TAG, "Unable to connect to secondary server.");
-                        lsAddress = PRIMARY_LIVE;
-                        if (isReachable(lsAddress)) {
-                            Log.d(TAG, "Primary server is reachable.");
-                            loConfig.setIfBackUpServer(false);
-                            return true;
-                        } else {
-                            message = "Unable to connect to our servers.";
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                } else {
-                    lsAddress = PRIMARY_LIVE;
-                    if (!isReachable(lsAddress)) {
-                        Log.e(TAG, "Unable to connect to primary server.");
-                        lsAddress = SECONDARY_LIVE;
-                        if (isReachable(lsAddress)) {
-                            Log.d(TAG, "Secondary server is reachable.");
-                            loConfig.setIfBackUpServer(true);
-                            return true;
-                        } else {
-                            message = "Unable to connect to our servers.";
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                }
             }
+
+            if (isReachable(LOCAL)) {
+                AppConfig.getInstance(context).setServerAddress(LOCAL);
+                Log.d(TAG, "Local server is active.");
+                return true;
+            }
+
+            if(isReachable(LIVE)){
+                AppConfig.getInstance(context).setServerAddress(LIVE);
+                Log.d(TAG, "Live server is active.");
+                return true;
+            }
+
+            message = "Unable to reach our servers.";
+            return false;
         } catch (Exception e){
             e.printStackTrace();
             message = e.getMessage();

@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "org.guanzonsms"
         minSdk 24
-        targetSdk 31
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -55,6 +55,5 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     // Module Implementations
-    implementation project(':smsAppDriver')
     implementation project(':appDriver')
 }

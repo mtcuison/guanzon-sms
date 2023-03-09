@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.guanzonsms.receiver.Activity.Activity_Compose"
+    tools:context="org.guanzonsms.Activity.Activity_Compose"
     android:orientation="vertical">
     
     <EditText

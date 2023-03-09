@@ -7,7 +7,6 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class SrvcSmsServerUpdate extends JobService {
     private static final String TAG = SrvcSmsServerUpdate.class.getSimpleName();
 
