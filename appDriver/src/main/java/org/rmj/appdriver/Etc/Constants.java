@@ -26,8 +26,9 @@ public class Constants {
     }
 
     public String DATE_MODIFIED = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Calendar.getInstance().getTime());
-
-
+    public String GetCurrentTimeStamp(){
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Calendar.getInstance().getTime());
+    }
 
     /**
      *

@@ -20,7 +20,6 @@ public class SmsListAdapter extends RecyclerView.Adapter<SmsListAdapter.SmsHolde
 
     public SmsListAdapter(List<ESmsIncoming> foSmsList) {
         this.smsList = foSmsList;
-        notifyDataSetChanged();
     }
 
     @NonNull
@@ -35,9 +34,13 @@ public class SmsListAdapter extends RecyclerView.Adapter<SmsListAdapter.SmsHolde
     public void onBindViewHolder(@NonNull SmsHolder holder, int position) {
         ESmsIncoming sms = smsList.get(position);
         holder.lsReceivr = "0";
-        holder.lblTimesx.setText(sms.getSendDate());
+        holder.lblTimesx.setText(sms.getReceived());
         holder.lblMobile.setText(sms.getMobileNo());
         holder.lblTxtMsg.setText(sms.getMessagex());
+        if(!sms.getSendDate().isEmpty()){
+            holder.lblUpload.setVisibility(View.VISIBLE);
+            holder.lblUpload.setText(sms.getSendDate());
+        }
     }
 
     @Override
@@ -50,12 +53,14 @@ public class SmsListAdapter extends RecyclerView.Adapter<SmsListAdapter.SmsHolde
         private MaterialTextView lblTimesx;
         private MaterialTextView lblMobile;
         private MaterialTextView lblTxtMsg;
+        private MaterialTextView lblUpload;
 
         public SmsHolder(View itemView) {
             super(itemView);
             lblTimesx = itemView.findViewById(R.id.lbl_timestamp);
             lblMobile = itemView.findViewById(R.id.lbl_mobileno);
             lblTxtMsg = itemView.findViewById(R.id.lbl_txt_message);
+            lblUpload = itemView.findViewById(R.id.lbl_uploaded);
         }
 
     }

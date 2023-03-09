@@ -94,7 +94,7 @@ public class SmsMaster {
                 loSmsinfo.setMobileNo(lsMobileN);
                 loSmsinfo.setSubscrbr(getSubs(lsMobileN));
                 loSmsinfo.setMessagex(mySmsText);
-                loSmsinfo.setReceived(new Constants().DATE_MODIFIED);
+                loSmsinfo.setReceived(new Constants().GetCurrentTimeStamp());
                 loSmsinfo.setSendStat("0");
                 poDao.SaveSmsInfo(loSmsinfo);
             }

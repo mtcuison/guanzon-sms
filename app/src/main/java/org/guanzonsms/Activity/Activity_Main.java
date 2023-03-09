@@ -88,7 +88,10 @@ public class Activity_Main extends AppCompatActivity {
         poNoMsgsx = findViewById(R.id.ln_noMessages);
         btnCmpMsg = findViewById(R.id.fab);
         rvSmsList = findViewById(R.id.rv_sms_list);
-        rvSmsList.setLayoutManager(new LinearLayoutManager(Activity_Main.this));
+        LinearLayoutManager loManager = new LinearLayoutManager(Activity_Main.this);
+        loManager.setOrientation(RecyclerView.VERTICAL);
+        loManager.setStackFromEnd(true);
+        rvSmsList.setLayoutManager(loManager);
         rvSmsList.setHasFixedSize(true);
     }
 
