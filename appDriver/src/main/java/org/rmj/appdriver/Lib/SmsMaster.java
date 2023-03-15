@@ -93,7 +93,7 @@ public class SmsMaster {
                 loSmsinfo.setSourceCd("HL");
                 loSmsinfo.setMobileNo(lsMobileN);
                 loSmsinfo.setSubscrbr(getSubs(lsMobileN));
-                loSmsinfo.setMessagex(mySmsText);
+                loSmsinfo.setMessagex(mySmsText.replace("'", " "));
                 loSmsinfo.setReceived(new Constants().GetCurrentTimeStamp());
                 loSmsinfo.setSendStat("0");
                 poDao.SaveSmsInfo(loSmsinfo);
