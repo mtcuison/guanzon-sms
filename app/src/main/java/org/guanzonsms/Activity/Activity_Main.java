@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -93,6 +94,28 @@ public class Activity_Main extends AppCompatActivity {
         loManager.setStackFromEnd(true);
         rvSmsList.setLayoutManager(loManager);
         rvSmsList.setHasFixedSize(true);
+
+        findViewById(R.id.btnresend).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.UploadSms(new VMSmsIncoming.OnUploadSmsCallback() {
+                    @Override
+                    public void OnUpload() {
+                        Toast.makeText(Activity_Main.this, "Uploading SMS...", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void OnSuccess() {
+                        Toast.makeText(Activity_Main.this, "SMS uploaded successfully!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void OnFailed(String message) {
+                        Toast.makeText(Activity_Main.this, "Upload failed. " + message, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     private void displaySmsList() {
